@@ -16,25 +16,25 @@ from producto p
 JOIN fabricante f on p.id_fabricante = p.id_fabricante;
 
 -- 4. Devuelve el nombre del producto, su precio y el nombre de su fabricante, del producto más barato.
-select p.nombre, p.precio, f.nombre
+select TOP 1 p.nombre, p.precio, f.nombre
 from producto p
 JOIN fabricante f on p.id_fabricante = f.id
-where precio = (select MIN(precio) from producto);
+ORDER BY p.precio;
 
 -- 5.Devuelve el nombre del producto, su precio y el nombre de su fabricante, del producto más caro.
-select p.nombre, p.precio, f.nombre
+select TOP 1 p.nombre, p.precio, f.nombre
 from producto p
 JOIN fabricante f on p.id_fabricante = f.id
-where precio = (select MAX(precio) from producto);
+ORDER BY p.precio DESC;
 
 -- 6. Devuelve una lista de todos los productos del fabricante Lenovo.
-select *
+select p.*
 from producto p
 JOIN fabricante f on p.id_fabricante = f.id
 WHERE f.nombre = 'Lenovo';
 
 -- 7. Devuelve una lista de todos los productos del fabricante Crucial que tengan un precio mayor que 200€.
-select *
+select p.*
 from producto p
 JOIN fabricante f on p.id_fabricante = f.id
 WHERE f.nombre = 'Crucial' and p.precio > 200;
@@ -52,13 +52,13 @@ JOIN fabricante f on p.id_fabricante = f.id
 WHERE f.nombre in('Asus', 'Hewlett-Packard', 'Seagate');
 
 -- 10. Devuelve un listado con el nombre y el precio de todos los productos de los fabricantes cuyo nombre termine por la vocal e.
-select *
+select p.nombre, p.precio
 from producto p
 JOIN fabricante f on p.id_fabricante = f.id
-WHERE RIGHT(f.nombre,1) = 'e';
+WHERE f.nombre LIKE '%e';
 
 -- 11. Devuelve un listado con el nombre y el precio de todos los productos cuyo nombre de fabricante contenga el carácter w en su nombre.
-select * 
+select p.nombre, p.precio
 from producto p
 JOIN fabricante f on p.id_fabricante = f.id
 WHERE f.nombre LIKE '%w%'; 

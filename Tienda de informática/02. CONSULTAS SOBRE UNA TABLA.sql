@@ -59,14 +59,14 @@ OFFSET 3 ROWS
 FETCH NEXT 2 ROWS ONLY;
 
 -- 16. Lista el nombre y el precio del producto más barato.
-select nombre, precio
+select top 1 nombre, precio
 from producto 
-where precio = (select min(precio) from producto);
+ORDER BY precio ASC;
 
 -- 17. Lista el nombre y el precio del producto más caro.
-select nombre, precio
+select TOP 1 nombre, precio
 from producto
-where precio = (select max(precio) from producto);
+ORDER BY precio DESC;
 
 -- 18. Lista el nombre de todos los productos del fabricante cuyo identificador de fabricante es igual a 2.
 select nombre
@@ -92,12 +92,12 @@ from producto;
 -- 22. Lista los nombres de los fabricantes cuyo nombre empiece por la letra S.
 select nombre
 from fabricante
-where LEFT(nombre, 1) = 's';
+where nombre like 's%';
 
 -- 23. Lista los nombres de los fabricantes cuyo nombre termine por la vocal e.
 select nombre
 from fabricante
-where RIGHT(nombre, 1) = 'e';
+where nombre like '%e';
 
 -- 24. Lista los nombres de los fabricantes cuyo nombre contenga el carácter w.
 select nombre
@@ -117,7 +117,7 @@ where nombre LIKE '%Portátil%';
 -- 27. Devuelve una lista con el nombre de todos los productos que contienen la cadena Monitor en el nombre y tienen un precio inferior a 230 €.
 select nombre, precio
 from producto
-where nombre LIKE '%Monitor%' and precio >230;
+where nombre LIKE '%Monitor%' and precio <230;
 
 -- 28. Lista el nombre y el precio de todos los productos que tengan un precio mayor o igual a 180€. Ordene el resultado en primer lugar por el precio (en orden descendente) y en segundo lugar por el nombre (en orden ascendente).
 select nombre, precio

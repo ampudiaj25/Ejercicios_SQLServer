@@ -43,7 +43,7 @@ select SUM(precio) as total_precio from producto;
 -- 9. Calcula el número de productos que tiene el fabricante Asus.
 select COUNT(p.id) as Total_ASUS
 from producto p
-RIGHT JOIN fabricante f on p.id_fabricante = f.id
+JOIN fabricante f on p.id_fabricante = f.id
 WHERE f.nombre = 'Asus';
 
 -- 10. Calcula la media del precio de todos los productos del fabricante Asus.
@@ -65,7 +65,7 @@ GROUP BY f.nombre;
 select f.nombre, COUNT(p.id) as TotalP
 from fabricante f
 LEFT JOIN producto p on f.id = p.id_fabricante
-GROUP BY f.nombre
+GROUP BY f.nombre																							
 ORDER BY TotalP DESC;
 
 -- 13. Devuelve un listado con los nombres de los fabricantes y el número de productos que tiene cada uno con un precio superior o igual a 220 €. No es necesario mostrar el nombre de los fabricantes que no tienen productos que cumplan la condición.
