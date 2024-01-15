@@ -96,11 +96,11 @@ WHERE e.codigo_empleado NOT IN (select c.codigo_empleado_rep_ventas
 /*Devuelve las oficinas donde no trabajan ninguno de los empleados
 que hayan sido los representantes de ventas de algún cliente que haya
 realizado la compra de algún producto de la gama Frutales.*/
-SELECT *
-FROM oficina o
+select *
+from oficina o
 WHERE o.codigo_oficina NOT IN (
-    SELECT DISTINCT e.codigo_oficina
-    FROM empleado e
+    select DISTINCT e.codigo_oficina
+    from empleado e
     JOIN cliente c ON e.codigo_empleado = c.codigo_empleado_rep_ventas
     JOIN pedido p ON c.codigo_cliente = p.codigo_cliente
     JOIN detalle_pedido dp ON p.codigo_pedido = dp.codigo_pedido
@@ -140,6 +140,89 @@ from producto p
 WHERE EXISTS (select d.codigo_producto
                   from detalle_pedido d
 				  where p.codigo_producto = d.codigo_producto);
+
+/*Devuelve el listado de clientes indicando el nombre del cliente
+y cuántos pedidos ha realizado. Tenga en cuenta que pueden existir
+clientes que no han realizado ningún pedido.*/
+select c.nombre_cliente, COUNT(p.codigo_cliente) as total_pedidos
+from cliente c
+LEFT JOIN pedido p on c.codigo_cliente = p.codigo_cliente
+GROUP BY c.nombre_cliente
+
+/*Devuelve un listado con los nombres de los clientes y el total
+pagado por cada uno de ellos. Tenga en cuenta que pueden existir
+clientes que no han realizado ningún pago.*/
+select c.nombre_cliente, SUM(p.codigo_cliente)
+from cliente c
+LEFT JOIN pago p on c.codigo_cliente = p.codigo_cliente
+GROUP BY c.nombre_cliente
+
+/*Devuelve el nombre de los clientes que hayan hecho pedidos
+en 2008 ordenados alfabéticamente de menor a mayor.*/
+select c.nombre_cliente, p.fecha_pedido
+from cliente c
+JOIN pedido p on c.codigo_cliente = p.codigo_cliente
+WHERE YEAR(p.fecha_pedido) = 2008
+ORDER BY p.fecha_pedido;
+
+/*Devuelve el nombre del cliente, el nombre y primer apellido
+de su representante de ventas y el número de teléfono de la
+oficina del representante de ventas, de aquellos clientes
+que no hayan realizado ningún pago.*/
+select c.nombre_cliente, e.nombre, e.apellido1, o.telefono
+from cliente c
+JOIN empleado e on c.codigo_empleado_rep_ventas = e.codigo_empleado
+JOIN oficina o on e.codigo_oficina = o.codigo_oficina
+LEFT JOIN pago p on c.codigo_cliente = p.codigo_cliente
+WHERE p.total IS NULL;
+
+/*Devuelve el listado de clientes donde aparezca el nombre del cliente,
+el nombre y primer apellido de su representante de ventas y la ciudad
+donde está su oficina.*/
+select c.nombre_cliente, e.nombre, e.apellido1, o.ciudad
+from cliente c
+JOIN empleado e on c.codigo_empleado_rep_ventas = e.codigo_empleado
+JOIN oficina o on e.codigo_oficina = o.codigo_oficina;
+
+/*Devuelve un listado indicando todas las ciudades donde hay oficinas
+y el número de empleados que tiene.*/
+select o.ciudad, COUNT(e.codigo_oficina) as total_empleados
+from oficina o
+JOIN empleado e on o.codigo_oficina = e.codigo_oficina
+GROUP BY o.ciudad
+
+/*Devuelve el nombre, apellidos, puesto y teléfono de la oficina de
+aquellos empleados que no sean representante de ventas de ningún
+cliente.*/
+select e.nombre, e.apellido1, e.apellido2, e.puesto, o.telefono
+from empleado e
+JOIN oficina o on e.codigo_oficina = o.codigo_oficina
+LEFT JOIN cliente c on e.codigo_empleado = c.codigo_empleado_rep_ventas
+WHERE c.codigo_empleado_rep_ventas IS NULL;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
