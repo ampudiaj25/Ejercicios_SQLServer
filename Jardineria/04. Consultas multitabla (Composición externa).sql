@@ -52,8 +52,8 @@ LEFT JOIN cliente c ON e.codigo_empleado = c.codigo_empleado_rep_ventas
 LEFT JOIN pedido p ON c.codigo_cliente = p.codigo_cliente
 LEFT JOIN detalle_pedido dp ON p.codigo_pedido = dp.codigo_pedido
 LEFT JOIN producto pr ON dp.codigo_producto = pr.codigo_producto
-LEFT JOIN gama_producto gp ON pr.gama = gp.gama
-WHERE gp.gama = 'Frutales';
+LEFT JOIN gama_producto gp ON pr.gama = gp.gama AND gp.gama = 'Frutales';
+
 
 /*Devuelve un listado con los clientes que han realizado algún pedido pero
 no han realizado ningún pago.*/
